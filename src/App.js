@@ -1,22 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import TimeSelect from "./components/TimeSelect";
+import React, {useState} from "react";
+import TimeDisplay from "./components/TimeDisplay";
+
 
 function App() {
+
+  const [timer, setTimer] = useState(0);
+  const [breakTimer, setBreakTimer] = useState(0);
+  const [currentTimer, setCurrentTimer] = useState('work');
+
+  let changeMode = function () {
+    if (currentTimer === 'work'){
+      setCurrentTimer('break');
+    } else {
+      setCurrentTimer('work');
+    }
+  }
+
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Study time: {timer}
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <TimeSelect timer={timer} updateTimer={(newTime) => setTimer(newTime)}/>
+
+        <p>
+          Break time: {breakTimer}
+        </p>
+        <TimeSelect timer={breakTimer} updateTimer={(newTime) => setBreakTimer(newTime)}/>
+
+        {currentTimer === 'work' ? <p>Working hard</p> : <p>Break Time!</p>}
+
+        {currentTimer === 'work' ? <TimeDisplay timer={timer} changeTimerMode={changeMode}/> : <TimeDisplay timer={breakTimer} changeTimerMode={changeMode}/>}
+
       </header>
     </div>
   );
